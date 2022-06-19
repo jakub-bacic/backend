@@ -12,6 +12,8 @@ starlette = "^0.20.3"
 pydantic = "^1.9.1"
 websockets = "^10.3"
 SQLAlchemy = "^1.4.37"
+structlog = "^21.5.0"
+logfmter = "^0.0.6"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
