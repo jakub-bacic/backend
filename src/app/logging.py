@@ -4,14 +4,14 @@ from typing import List
 import structlog
 
 
-def configure() -> None:
+def configure(log_level: int = logging.INFO) -> None:
     logging.getLogger("uvicorn").handlers = []
 
     shared_processors: List[structlog.types.Processor] = [
         structlog.stdlib.add_log_level,
         structlog.stdlib.add_logger_name,
         structlog.processors.format_exc_info,
-        structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S"),
+        structlog.processors.TimeStamper(fmt="iso", utc=True),
     ]
 
     structlog.configure(
@@ -19,6 +19,7 @@ def configure() -> None:
             structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
         ],
         logger_factory=structlog.stdlib.LoggerFactory(),
+        wrapper_class=structlog.make_filtering_bound_logger(log_level),
         cache_logger_on_first_use=True,
     )
 
@@ -42,4 +43,8 @@ def configure() -> None:
 
     root_logger = logging.getLogger()
     root_logger.addHandler(handler)
-    root_logger.setLevel(logging.INFO)
+    root_logger.setLevel(log_level)
+
+
+def get_logger() -> structlog.stdlib.BoundLogger:
+    return structlog.stdlib.get_logger()

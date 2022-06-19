@@ -2,8 +2,9 @@ import strawberry
 import structlog
 from strawberry import Schema
 
+from app.logging import get_logger
 
-logger = structlog.get_logger()
+logger = get_logger()
 
 
 @strawberry.type
