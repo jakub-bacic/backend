@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Any
 
 import structlog
 
@@ -8,9 +8,10 @@ def configure(log_level: int = logging.INFO) -> None:
     logging.getLogger("uvicorn").handlers = []
 
     shared_processors: List[structlog.types.Processor] = [
+        structlog.contextvars.merge_contextvars,
         structlog.stdlib.add_log_level,
         structlog.stdlib.add_logger_name,
-        structlog.processors.format_exc_info,
+        structlog.processors.format_exc_info,  # needs to be removed for 'rich' to work
         structlog.processors.TimeStamper(fmt="iso", utc=True),
     ]
 
@@ -31,8 +32,8 @@ def configure(log_level: int = logging.INFO) -> None:
         processors=[
             # Remove _record & _from_structlog.
             structlog.stdlib.ProcessorFormatter.remove_processors_meta,
-            # structlog.dev.ConsoleRenderer(),
-            structlog.processors.JSONRenderer(),
+            structlog.dev.ConsoleRenderer(),
+            # structlog.processors.JSONRenderer(),
             # structlog.processors.LogfmtRenderer(),
         ],
     )
@@ -48,3 +49,7 @@ def configure(log_level: int = logging.INFO) -> None:
 
 def get_logger() -> structlog.stdlib.BoundLogger:
     return structlog.stdlib.get_logger()
+
+
+def bind_context(**kw: Any) -> None:
+    structlog.contextvars.bind_contextvars(**kw)
