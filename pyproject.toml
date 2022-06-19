@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "mahjongtracker"
+version = "0.1.0"
+description = "A strawberry-powered GraphQL API that serves as the main backend API for Mahjong Tracker"
+authors = ["Jakub Bacic <jakub.bacic@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "3.10.4"
+strawberry-graphql = "^0.114.2"
+uvicorn = "^0.17.6"
+starlette = "^0.20.3"
+pydantic = "^1.9.1"
+websockets = "^10.3"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+flake8 = "^4.0.1"
+pytest-asyncio = "^0.18.3"
+pytest = "^7.1.2"
+mypy = "^0.961"
+isort = "^5.10.1"
+coverage = "^6.4.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
