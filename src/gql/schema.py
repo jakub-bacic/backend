@@ -14,9 +14,10 @@ class HealthcheckResult:
 @strawberry.type
 class Query:
     @strawberry.field
-    def healthcheck(self) -> HealthcheckResult:
+    def healthcheck(self, works: bool = True) -> HealthcheckResult:
         logger.warning("Handling healtcheck", test=123)
-        raise ValueError("123")
+        if not works:
+            raise ValueError("123")
         return HealthcheckResult(ok=True)
 
 
