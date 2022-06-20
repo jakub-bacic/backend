@@ -24,16 +24,12 @@ import subprocess
 import sys
 import sysconfig
 import tempfile
-
-from contextlib import closing
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 from functools import cmp_to_key
 from io import UnsupportedOperation
 from pathlib import Path
 from typing import Optional
-from urllib.request import Request
-from urllib.request import urlopen
-
+from urllib.request import Request, urlopen
 
 SHELL = os.getenv("SHELL", "")
 WINDOWS = sys.platform.startswith("win") or (sys.platform == "cli" and os.name == "nt")
@@ -514,9 +510,7 @@ class Installer:
         try:
             self.install(version)
         except subprocess.CalledProcessError as e:
-            raise PoetryInstallationError(
-                return_code=e.returncode, log=e.output.decode()
-            )
+            raise PoetryInstallationError(return_code=e.returncode, log=e.output.decode())
 
         self._write("")
         self.display_post_message(version)
@@ -600,9 +594,7 @@ class Installer:
                 shutil.rmtree(env_path)
 
             if env_path_saved.exists():
-                self._install_comment(
-                    version, "Restoring previously saved environment."
-                )
+                self._install_comment(version, "Restoring previously saved environment.")
                 shutil.move(env_path_saved, env_path)
 
             raise e
@@ -754,9 +746,7 @@ class Installer:
             return 0
 
         self._write("")
-        releases = sorted(
-            metadata["releases"].keys(), key=cmp_to_key(_compare_versions)
-        )
+        releases = sorted(metadata["releases"].keys(), key=cmp_to_key(_compare_versions))
 
         if self._version and self._version not in releases:
             msg = "Version {} does not exist.".format(self._version)
@@ -890,7 +880,9 @@ def main():
                 text=True,
             )
             installer._write(colorize("error", f"See {path} for error logs."))
-            text = f"{e.log}\nTraceback:\n\n{''.join(traceback.format_tb(e.__traceback__))}"
+            text = (
+                f"{e.log}\nTraceback:\n\n{''.join(traceback.format_tb(e.__traceback__))}"
+            )
             Path(path).write_text(text)
 
         return e.return_code

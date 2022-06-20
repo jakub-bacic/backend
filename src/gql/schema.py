@@ -3,7 +3,7 @@ from typing import Optional
 import strawberry
 from strawberry import Schema
 
-from app.logging import get_logger, bind_context
+from app.logging import bind_context, get_logger
 
 logger = get_logger()
 
@@ -20,7 +20,9 @@ class HealthcheckResult:
 @strawberry.type
 class Query:
     @strawberry.field
-    def healthcheck(self, works: bool = True, value: Optional[int] = None) -> HealthcheckResult:
+    def healthcheck(
+        self, works: bool = True, value: Optional[int] = None
+    ) -> HealthcheckResult:
         logger.warning("Handling healtcheck")
 
         if value:

@@ -1,5 +1,5 @@
 import logging
-from typing import List, Any
+from typing import Any, List
 
 import structlog
 
@@ -16,7 +16,8 @@ def configure(log_level: int = logging.INFO) -> None:
     ]
 
     structlog.configure(
-        processors=shared_processors + [
+        processors=shared_processors
+        + [
             structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
         ],
         logger_factory=structlog.stdlib.LoggerFactory(),

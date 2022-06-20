@@ -1,0 +1,4 @@
+[flake8]
+exclude = install-poetry.py
+max_line_length = 90
+extend-ignore = E203
