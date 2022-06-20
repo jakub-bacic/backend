@@ -33,6 +33,19 @@ class Query:
         return HealthcheckResult(ok=True)
 
 
+@strawberry.type
+class AddResult:
+    result: int
+
+
+@strawberry.type
+class Mutation:
+    @strawberry.field
+    def add_numbers(self, a: int, b: int) -> AddResult:
+        return AddResult(result=a + b)
+
+
 schema = Schema(
     query=Query,
+    mutation=Mutation,
 )
